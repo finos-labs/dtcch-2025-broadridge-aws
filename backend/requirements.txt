@@ -1,0 +1,7 @@
+boto3
+awscli
+python-dotenv
+amazon-textract-textractor[pdfium]
+amazon-textract-textractor
+pandas
+pymupdf4llm
