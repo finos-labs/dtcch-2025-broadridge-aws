@@ -19,6 +19,7 @@ venv
 # Miscellaneous
 .idea
 .vscode
+.env
 notes.txt
 
 # Python directories
