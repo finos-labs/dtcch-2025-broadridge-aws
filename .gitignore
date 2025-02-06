@@ -19,6 +19,7 @@ venv
 # Miscellaneous
 .idea
 .vscode
+notes.txt
 
 # Python directories
 __pycache__
