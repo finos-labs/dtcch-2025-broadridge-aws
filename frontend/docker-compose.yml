@@ -1,0 +1,42 @@
+services:
+  webapp:
+    image: hackathon_br605/webapp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hackathon_br605_webapp
+    command: ["node", "server.js"]
+    environment:
+      - API_URL=http://host.docker.internal:9086
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+        reservations:
+          cpus: "0.75"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+      - 80:3000
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 1
+        max-size: 10m
+    healthcheck:
+      test:
+        ["CMD-SHELL", "curl --fail http://127.0.0.1:3000/api/alive || exit 1"]
+      interval: 90s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN

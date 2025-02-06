@@ -1,16 +1,25 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 
-# FINOS DTCC Hackathon 
-
+# FINOS DTCC Hackathon
 
 ## Project Name
 
+LoanLex
 
 ### Project Details
 
+We understand the language of loans (Credit).
+
+This is a tool to assess the user credit risk based on the loan application and the bank credit risk policy document.
 
 ### Team Information
 
+- Aviad Stein (Broadridge)
+- Abhinav Gupta (Broadridge)
+- Max Winter (Amazon)
+- Sai Tharun Reddy Adike (Broadridge)
+- Augustine Glarence (Broadridge)
+- Ryan Verola (Amazon)
 
 ## Using DCO to sign your commits
 
