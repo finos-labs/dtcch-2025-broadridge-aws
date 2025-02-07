@@ -59,14 +59,22 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as e:
             self._send_error(500, f"Internal Server Error: {str(e)}")
 
+    def _set_cors_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "http://localhost:3000")
+        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        self.send_header("Access-Control-Max-Age", "3600")
+
     def _send_error(self, code, message):
         self.send_response(code)
+        self._set_cors_headers()
         self.send_header("Content-type", "text/html")
         self.end_headers()
         self.wfile.write(f"<html><body><h1>{message}</h1></body></html>".encode())
 
     def _send_success(self, result):
         self.send_response(200)
+        self._set_cors_headers()
         self.send_header("Content-type", "application/json")
         self.end_headers()
         self.wfile.write(result.encode("utf-8"))
