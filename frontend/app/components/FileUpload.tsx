@@ -1,10 +1,23 @@
 "use client";
 
-import { Dispatch, useCallback } from "react";
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const FileUpload = ({ homeDispatch }: { homeDispatch: Dispatch<TAction> }) => {
-  const onDrop = useCallback(() => {}, []);
+const FileUpload = ({
+  uploadedFile,
+  handleFieldChange,
+  handleFileUpload,
+  handleFileSubmit,
+}: Readonly<{
+  uploadedFile: File | undefined;
+  handleFieldChange: (value: string, key: string) => void;
+  handleFileUpload: (file: File) => void;
+  handleFileSubmit: () => void;
+}>) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if(!acceptedFiles[0]) return;
+    handleFileUpload(acceptedFiles[0]);
+  }, [handleFileUpload]);
 
   const dropZoneAccept = {
     "text/csv": [".csv"],
@@ -25,8 +38,8 @@ const FileUpload = ({ homeDispatch }: { homeDispatch: Dispatch<TAction> }) => {
       <select
         className="border border-gray-300 rounded-md p-2 w-[50%]"
         id="policy"
-        onChange={e => {
-          homeDispatch({ type: "changedField", field: "policy", value: e.target.value });
+        onChange={(e) => {
+          handleFieldChange("policy", e.target.value);
         }}
       >
         <option value="policy_1">Policy 1</option>
@@ -36,6 +49,7 @@ const FileUpload = ({ homeDispatch }: { homeDispatch: Dispatch<TAction> }) => {
       <label htmlFor="file" className="mt-2">
         Upload loan application
       </label>
+      {uploadedFile && <p className="my-2">File: <span className="font-bold">{uploadedFile.name}</span></p>}
       <div
         {...getRootProps()}
         className={`h-[192px] border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition duration-300 ease-in-out ${
@@ -60,7 +74,7 @@ const FileUpload = ({ homeDispatch }: { homeDispatch: Dispatch<TAction> }) => {
           .join(", ")}`}
       </p>
       <button
-        onClick={() => homeDispatch({ type: "fileSubmitted" })}
+        onClick={() => handleFileSubmit()}
         className="mt-2 px-4 py-2 bg-red-700 text-white rounded hover:bg-red-800 transition duration-300 ease-in-out"
       >
         Submit
