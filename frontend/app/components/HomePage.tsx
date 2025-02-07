@@ -35,7 +35,12 @@ export default function HomePage() {
         return { ...state, loading: true };
       }
       if (action.type === "fileSubmitted") {
-        return { ...state, results: action.payload, loading: false, uploadPage: false };
+        return {
+          ...state,
+          results: action.payload,
+          loading: false,
+          uploadPage: false,
+        };
       }
       if (action.type === "fileSubmitFailed") {
         return { ...state, loading: false };
@@ -45,7 +50,7 @@ export default function HomePage() {
       }
       return state;
     },
-    initState
+    initState,
   );
 
   const handleFieldChange = (field: string, value: string) => {
@@ -66,10 +71,13 @@ export default function HomePage() {
       const formData = new FormData();
       formData.append("file1", state.file);
       formData.append("body", `{ "policy": "${state.policy}" }`);
-      const response = await fetch("http://localhost:5143/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
       const results = await response.json();
       dispatch({ type: "fileSubmitted", payload: results });
     } catch {
@@ -84,7 +92,7 @@ export default function HomePage() {
 
   if (state.loading) {
     return <Loading />;
-  };
+  }
 
   return (
     <div className="prose flex flex-col w-[60%] items-center gap-2">
