@@ -20,18 +20,24 @@ RUN npm_config_nodedir=/usr/local \
 
 FROM public.ecr.aws/docker/library/node:22.13.0-alpine3.21 AS builder
 ARG GIT_SHA
+ARG API_URL
+ARG NEXT_PUBLIC_API_URL
 WORKDIR /app
 COPY . .
 COPY --from=dependency_installer /app/node_modules ./node_modules
 ENV NEXT_TELEMETRY_DISABLED=1 \
   PATH=/app/node_modules/.bin:/app/node_modules/next/dist/bin:${PATH} \
   GIT_SHA=${GIT_SHA} \
-  NODE_ENV=production
+  NODE_ENV=production \
+  API_URL=${API_URL} \
+  NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN next build
 
 
 FROM public.ecr.aws/docker/library/node:22.13.0-alpine3.21
 ARG GIT_SHA
+ARG API_URL
+ARG NEXT_PUBLIC_API_URL
 EXPOSE 3000
 # Metadata about the build file
 LABEL Description="DTCC Hackatho: Team Broadridge 605 Studios" \
@@ -65,7 +71,9 @@ ENV NPM_CONFIG_PREFIX=/home/node/.npm-global \
   # max size of your Node.js program
   NODE_OPTIONS=--max-old-space-size=1024 \
   HOSTNAME=0.0.0.0 \
-  PORT=3000
+  PORT=3000 \
+  API_URL=${API_URL} \
+  NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN npm install --global --omit=optional --ignore-scripts npm@11.1.0 sharp
 # Copy the files, install npm modules and add .npm
 WORKDIR /app/standalone

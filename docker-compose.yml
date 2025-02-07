@@ -1,0 +1,61 @@
+networks:
+  dtcc-network:
+    driver: bridge
+    name: dtcc
+services:
+  app:
+    build:
+      context: ./dtcc-hackathon-backend
+      dockerfile: Dockerfile
+    ports:
+      - 5143:5143
+    restart: on-failure
+    networks:
+      - dtcc-network
+  webapp:
+    image: webapp:latest
+    build:
+      context: ./dtcc-hackathon
+      dockerfile: Dockerfile
+      args:
+        - API_URL=http://host.docker.internal:5143
+        - NEXT_PUBLIC_API_URL=http://dtcc-hackathon-lb-226100076.us-west-2.elb.amazonaws.com:5143
+    container_name: hackathon_br605_webapp
+    command: ["node", "server.js"]
+    environment:
+      - API_URL=http://host.docker.internal:5143
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - dtcc-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+        reservations:
+          cpus: "0.75"
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+      - 80:3000
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 1
+        max-size: 10m
+    healthcheck:
+      test:
+        ["CMD-SHELL", "curl --fail http://127.0.0.1:3000/api/alive || exit 1"]
+      interval: 90s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+

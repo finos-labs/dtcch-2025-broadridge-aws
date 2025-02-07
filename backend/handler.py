@@ -60,7 +60,7 @@ class Handler(BaseHTTPRequestHandler):
             self._send_error(500, f"Internal Server Error: {str(e)}")
 
     def _set_cors_headers(self):
-        self.send_header("Access-Control-Allow-Origin", "http://localhost:3000")
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.send_header("Access-Control-Max-Age", "3600")

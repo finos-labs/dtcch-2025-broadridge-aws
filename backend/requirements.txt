@@ -5,3 +5,4 @@ amazon-textract-textractor[pdfium]
 amazon-textract-textractor
 pandas
 pymupdf4llm
+uvicorn

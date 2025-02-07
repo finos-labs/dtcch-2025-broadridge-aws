@@ -50,7 +50,7 @@ applicant's credit score is {credit_score}:
 return a json with the following keys:
 - SCORE: the credit risk score calculated above
 - ASSESSMENT: credit worthiness assessment of 200 words or less (5-6 bullet points).
-- REMEDIES: a list of suggestions to improve the credit risk rating for future applications - only write this if the SCORE is 3 or higher, and leave it empty if it's 1 or 2.
+- REMEDIES: a list of sugestions to improve the credit risk rating for future applications - only write this if the SCORE is 3 or higher, and leave it empty if it's 1 or 2.
 do not write any commentary before or after the json object.
 """,
                         },
