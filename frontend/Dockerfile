@@ -69,7 +69,7 @@ ENV NPM_CONFIG_PREFIX=/home/node/.npm-global \
 RUN npm install --global --omit=optional --ignore-scripts npm@11.1.0 sharp
 # Copy the files, install npm modules and add .npm
 WORKDIR /app/standalone
-# COPY --chown=1000:0 --chmod=755 ./public ./public
+COPY --chown=1000:0 --chmod=755 ./public ./public
 COPY --from=builder --chown=1000:0 --chmod=755 ./app/.next/standalone ./
 COPY --from=builder --chown=1000:0 --chmod=755 ./app/.next/static ./.next/static
 
